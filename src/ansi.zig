@@ -8,7 +8,7 @@
 
 // ╔══════════════════════════════════════ DATA ══════════════════════════════════════╗
 
-    pub const   types                       = @import("./types/_.zig");
+    pub const   types                       = @import("./types/all.zig");
     const       str                         = []const u8;
 
     var         g_sb  : [1024]u8            = undefined;    // style  buffer
