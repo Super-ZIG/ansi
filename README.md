@@ -28,7 +28,7 @@ Easily apply text styles and manage color codes in terminal applications. 🖥�
 
 Here are some of the main methods you can use in **SuperZIG - ANSI** :
 
-- ### [`style`](./docs/func/on.md) ✨
+- ### [`style`](./docs/func/style.md) ✨
 
     Applies ANSI styles (foreground, background, and attributes) to a string.
 
