@@ -1,14 +1,15 @@
-// ╔══════════════════════════════════════ LOAD ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ FILE ══════════════════════════════════════╗
 
-    const       std                         = @import("std");
-    const       io                          = @import("./src/libs/io.zig");
-    const       ansi                        = @import("./src/ansi.zig");
+    const std       = @import("std");
+    const ansiLite  = @import("./dist/ansi.lite.zig");
+    const ansiFull  = @import("./src/ansi.zig");
+    const ansi      = ansiFull;
 
 // ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 
 
-// ╔══════════════════════════════════════ MAIN ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ CORE ══════════════════════════════════════╗
 
     pub fn main() !void
     {
@@ -145,7 +146,7 @@
 
 
 
-// ╔══════════════════════════════════════ ____ ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ MORE ══════════════════════════════════════╗
 
     pub fn TRY (_msg: []const u8) void
     {
@@ -153,5 +154,16 @@
 
         io.outWith("\n[{s}] \n", .{ _msg }) catch unreachable;
     }
+
+    /// @ref https://github.com/Super-ZIG/io/blob/main/dist/io.lite.zig
+    const io = struct {
+        /// Outputs a simple message followed by a newline.
+        inline fn out( comptime _msg: []const u8 ) !void {
+            try outWith(_msg ++ "\n", .{}); }
+
+        /// Outputs a formatted message to the console.
+        inline fn outWith( comptime _fmt: []const u8, _args: anytype ) !void {
+            try nosuspend std.io.getStdOut().writer().print(_fmt, _args); }
+    };
 
 // ╚══════════════════════════════════════════════════════════════════════════════════╝

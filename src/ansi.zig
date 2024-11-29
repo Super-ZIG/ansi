@@ -1,112 +1,61 @@
-// ╔══════════════════════════════════════ LOAD ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ FILE ══════════════════════════════════════╗
 
-    const       std                         = @import("std");
-
-// ╚══════════════════════════════════════════════════════════════════════════════════╝
-
-
-
-// ╔══════════════════════════════════════ DATA ══════════════════════════════════════╗
-
-    pub const   types                       = @import("./types/all.zig");
-    const       str                         = []const u8;
-
-    var         g_sb  : [1024]u8            = undefined;    // style  buffer
-    var         g_rb  : [1024]u8            = undefined;    // remove buffer
+    const std       = @import("std");
+    pub const types = @import("./types/all.zig");
 
 // ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 
 
-// ╔══════════════════════════════════════ .ERR ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ INIT ══════════════════════════════════════╗
 
-    pub const   Error                       = error
-    {
-        BufferOverflow,
+    const str = []const u8;
+
+    var g_sb : [1024]u8 = undefined;    // style  buffer
+    var g_rb : [1024]u8 = undefined;    // remove buffer
+
+    pub const Error = error {
+        BufferOverflow
     };
 
 // ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 
 
-// ╔═════════════════════════════════════ STYLE ══════════════════════════════════════╗
+// ╔══════════════════════════════════════ CORE ══════════════════════════════════════╗
 
     /// Applies ANSI styles (foreground, background, and attributes) to a string.
-    pub fn      style
-    ( _str: str, _opt: types.styles )
-    !str
-    {
-        var bf = std.io.fixedBufferStream(g_sb[0..]);
-        return try Help.style( _str, _opt, &bf );
-    }
+    pub fn style( _str: str, _opt: types.styles ) !str { 
+        var bf = std.io.fixedBufferStream(g_sb[0..]); 
+        return try Help.style( _str, _opt, &bf ); }
 
     /// Applies ANSI styles to a string but writes the result to a specific buffer.
-    pub fn      styleBuff
-    ( _str: str, _opt: types.styles, _buff: anytype )
-    !str
-    {
-        var bf = std.io.fixedBufferStream(_buff[0..]);
-        return try Help.style( _str, _opt, &bf );
-    }
-
-// ╚══════════════════════════════════════════════════════════════════════════════════╝
-
-
-
-// ╔═════════════════════════════════════ TOOLS ══════════════════════════════════════╗
+    pub fn styleBuff( _str: str, _opt: types.styles, _buff: anytype ) !str { 
+        var bf = std.io.fixedBufferStream(_buff[0..]); 
+        return try Help.style( _str, _opt, &bf ); }
 
     /// Calculates the length of a string excluding ANSI escape sequences.
-    pub fn      strLen
-    ( _str: str )
-    usize
-    {
-        var strippedLength: usize = 0;
-        var inEscapeCode: bool = false;
-
-        for (_str) |c|
-        {
-            if (c == '\x1b')
-            {
-                inEscapeCode = true;
-            }
-            
-            else if (inEscapeCode and (c == 'm'))
-            {
-                inEscapeCode = false;
-            }
-            
-            else if (!inEscapeCode)
-            {
-                strippedLength += 1;
-            }
-        }
-        
-        return strippedLength;
-    }
+    pub fn strLen( _str: str ) usize {
+        var strippedLength : usize = 0; 
+        var inEscapeCode   : bool  = false; 
+        for (_str) |c| { 
+            if (c == '\x1b') { inEscapeCode = true; } 
+            else if (inEscapeCode and (c == 'm')) { inEscapeCode = false; } 
+            else if (!inEscapeCode) { strippedLength += 1; }
+        } 
+        return strippedLength; }
 
     /// Calculates the length of ANSI codes in a string.
-    pub fn      len
-    ( _str: str )
-    usize
-    {
-        return _str.len - strLen(_str);
-    }
+    pub fn len( _str: str ) usize {
+        return _str.len - strLen(_str); }
 
     /// Removes ANSI escape sequences from a string.
-    pub fn      remove
-    ( _str: str )
-    !str
-    {
-        return try Help.remove(_str, &g_rb);
-    }
+    pub fn remove( _str: str ) !str {
+        return try Help.remove(_str, &g_rb); }
 
     /// Removes ANSI escape sequences from a string using custom buffer.
-    pub fn      removeBuff
-    ( _str: str, _buff: anytype )
-    !str
-    {
-        return try Help.remove(_str, _buff);
-    }
+    pub fn removeBuff( _str: str, _buff: anytype ) !str {
+        return try Help.remove(_str, _buff); }
 
 // ╚══════════════════════════════════════════════════════════════════════════════════╝
 
@@ -116,44 +65,30 @@
 
     const Help = struct
     {
-        fn      style
-        ( _str: str, _opt: types.styles, _buffStream: anytype )
-        !str
+        fn style ( _str: str, _opt: types.styles, _buffStream: anytype ) !str
         {
             const l_writer = _buffStream.writer();
 
-            if (_opt.fgHEX) |hex|
-            {
+            if (_opt.fgHEX) |hex| {
                 const t_rgb = Help.hexToRGB(hex);
-                try l_writer.print("\x1b[38;2;{d};{d};{d}m", .{ t_rgb[0], t_rgb[1], t_rgb[2] });
-            }
+                try l_writer.print("\x1b[38;2;{d};{d};{d}m", .{ t_rgb[0], t_rgb[1], t_rgb[2] }); }
 
-            else if (_opt.fgRGB) |f_rgb|
-            {
-                try l_writer.print("\x1b[38;2;{d};{d};{d}m", .{ f_rgb[0], f_rgb[1], f_rgb[2] });
-            }
+            else if (_opt.fgRGB) |f_rgb| {
+                try l_writer.print("\x1b[38;2;{d};{d};{d}m", .{ f_rgb[0], f_rgb[1], f_rgb[2] }); }
 
-            else if (_opt.fg) |f_fg|
-            {
-                try l_writer.writeAll(try Help.colorCode(f_fg, true));
-            }
+            else if (_opt.fg) |f_fg| {
+                try l_writer.writeAll(try Help.colorCode(f_fg, true)); }
 
             // Handle background colors
-            if (_opt.bgHEX) |f_hex|
-            {
+            if (_opt.bgHEX) |f_hex| {
                 const t_rgb = Help.hexToRGB(f_hex);
-                try l_writer.print("\x1b[48;2;{d};{d};{d}m", .{ t_rgb[0], t_rgb[1], t_rgb[2] });
-            }
+                try l_writer.print("\x1b[48;2;{d};{d};{d}m", .{ t_rgb[0], t_rgb[1], t_rgb[2] }); }
 
-            else if (_opt.bgRGB) |rgb|
-            {
-                try l_writer.print("\x1b[48;2;{d};{d};{d}m", .{ rgb[0], rgb[1], rgb[2] });
-            }
+            else if (_opt.bgRGB) |rgb| {
+                try l_writer.print("\x1b[48;2;{d};{d};{d}m", .{ rgb[0], rgb[1], rgb[2] }); }
             
-            else if (_opt.bg) |bg|
-            {
-                try l_writer.writeAll(try Help.colorCode(bg, false));
-            }
+            else if (_opt.bg) |bg| {
+                try l_writer.writeAll(try Help.colorCode(bg, false)); }
 
             // Add text attributes
             const l_attr_code: u8 = @intFromEnum(_opt.attr orelse .Default);
@@ -168,9 +103,7 @@
             return _buffStream.getWritten();
         }
 
-        fn      remove
-        ( _str: str, _buff: anytype )
-        !str
+        fn remove ( _str: str, _buff: anytype ) !str
         {
             var l_index: usize = 0;
 
@@ -178,39 +111,31 @@
 
             for (_str) |f_c|
             {
-                if (f_c == '\x1b')
-                {
-                    l_inEscapeCode = true;                            // Start of escape sequence
-                }
+                // Start of escape sequence
+                if (f_c == '\x1b') { l_inEscapeCode = true; }
 
-                else if (l_inEscapeCode and f_c == 'm')
-                {
-                    l_inEscapeCode = false;                           // End of escape sequence
-                }
+                // End of escape sequence
+                else if (l_inEscapeCode and f_c == 'm') { l_inEscapeCode = false; }
 
                 else if (!l_inEscapeCode)
                 {
-                    if (l_index >= _buff.len)
-                    {
-                        return Error.BufferOverflow;                // Prevent overflow if input is too large
-                    }
+                    // Prevent overflow if input is too large
+                    if (l_index >= _buff.len) { return Error.BufferOverflow; }
 
                     _buff[l_index] = f_c;
                     l_index += 1;
                 }
             }
 
-            return _buff[0..l_index];                               // Return the slice of the filled part of the buffer
+            return _buff[0..l_index]; // Return the slice of the filled part of the buffer
         }
 
-        fn      colorCode
-        ( _color: types.color, _isFg: bool ) 
-        !str
+        fn colorCode ( _color: types.color, _isFg: bool ) !str
         {
-            var l_buff: [32]u8    = undefined;
-            var l_buffStream      = std.io.fixedBufferStream(l_buff[0..]);
-            var l_writer            = l_buffStream.writer();
-            var l_val               = @intFromEnum(_color);
+            var l_buff: [32]u8 = undefined;
+            var l_buffStream   = std.io.fixedBufferStream(l_buff[0..]);
+            var l_writer       = l_buffStream.writer();
+            var l_val          = @intFromEnum(_color);
 
             if(!_isFg) l_val = l_val + 10;
 
@@ -219,12 +144,9 @@
             return l_buffStream.getWritten();
         }
 
-        fn      hexToRGB
-        ( _hex: u32 ) 
-        [3]u8
+        fn hexToRGB ( _hex: u32 ) [3]u8
         {
-            return
-            .{
+            return .{
                 @truncate((_hex >> 16) & 0xFF), // Red
                 @truncate((_hex >> 8)  & 0xFF), // Green
                 @truncate( _hex        & 0xFF), // Blue
