@@ -15,7 +15,7 @@
         try io.out("");
         try io.out("");
 
-        // TRY("Attributes");
+        TRY("Attributes");
         {
             try io.outWith(" {s},", .{ try ansi.style("Bold",               .{ .attr=.Bold              } ) });
             try io.outWith(" {s},", .{ try ansi.style("Dim",                .{ .attr=.Dim               } ) });
@@ -42,7 +42,7 @@
             try io.out("");
         }
 
-        // TRY("Foreground RGB");
+        TRY("Foreground RGB");
         {
             try io.outWith(" {s},", .{ try ansi.style("Black",              .{ .fgRGB=.{ 0  ,0  ,  0 } } ) });
             try io.outWith(" {s},", .{ try ansi.style("Red",                .{ .fgRGB=.{ 255,0  ,  0 } } ) });
@@ -84,7 +84,7 @@
             try io.out("");
         }
 
-        // TRY("Background RGB");
+        TRY("Background RGB");
         {
             try io.outWith(" {s},", .{ try ansi.style("Black",              .{ .bgRGB=.{ 0  ,0  ,  0 } } ) });
             try io.outWith(" {s},", .{ try ansi.style("Red",                .{ .bgRGB=.{ 255,0  ,  0 } } ) });
