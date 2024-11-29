@@ -1,11 +1,9 @@
-// This is a min version of https://github.com/Super-ZIG/ansi library.
-// I created this file to use this library without the need to install it via Zig. 
-// Simply drag this single file into your project and import it.
-//
-// Made with ❤️ by Maysara.
-//
-// Email    : Maysara.Elshewehy@gmail.com
-// GitHub   : https://github.com/maysara-elshewehy
+// • This is a min version of ❮ https://github.com/Super-ZIG/ansi ❯ library •
+// • • •  Simply drag this single file into your project and import it  • • •
+// 
+// ╭────────────────────────╮  ✤ https://maysara.xyz
+// │ Made with ❤️ by Maysara │  ✤ https://github.com/maysara-elshewehy
+// ╰────────────────────────╯  ✤ maysara.elshewehy@gmail.com
 
 
 const std = @import("std");
