@@ -1,4 +1,4 @@
-// This is a lite version of https://github.com/Super-ZIG/ansi library.
+// This is a min version of https://github.com/Super-ZIG/ansi library.
 // I created this file to use this library without the need to install it via Zig. 
 // Simply drag this single file into your project and import it.
 //

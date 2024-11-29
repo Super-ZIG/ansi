@@ -21,7 +21,7 @@ Easily apply text styles and manage color codes in terminal applications. 🖥�
     > Supports Windows, Linux and macOS.
   
 - **📦 Single File Usage**  
-    > Use the lightweight version directly by dragging `ansi.lite.zig` into your project.
+    > Use the lightweight version directly by dragging `ansi.min.zig` into your project.
 
 
 ## Usage 📖
@@ -77,12 +77,12 @@ Here are some of the main methods you can use in **SuperZIG - ANSI** :
 
     - ### **Option 1: Single File Integration**
 
-        - Download the [`ansi.lite.zig`](./dist/ansi.lite.zig) file.  
+        - Download the [`ansi.min.zig`](./dist/ansi.min.zig) file.  
         - Add it to your project directory.  
         - Import it in your code:
 
             ```zig
-            const ansi = @import("path/to/your/ansi.lite.zig");
+            const ansi = @import("path/to/your/ansi.min.zig");
             ```
 
     - ### **Option 2: Zig Dependency**

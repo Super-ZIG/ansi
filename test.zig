@@ -1,7 +1,7 @@
 // ╔══════════════════════════════════════ FILE ══════════════════════════════════════╗
 
     const std       = @import("std");
-    const ansiLite  = @import("./dist/ansi.lite.zig");
+    const ansiMin   = @import("./dist/ansi.min.zig");
     const ansiFull  = @import("./src/ansi.zig");
     const ansi      = ansiFull;
     const testing   = std.testing;

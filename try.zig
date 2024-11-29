@@ -1,7 +1,7 @@
 // ╔══════════════════════════════════════ FILE ══════════════════════════════════════╗
 
     const std       = @import("std");
-    const ansiLite  = @import("./dist/ansi.lite.zig");
+    const ansiMin   = @import("./dist/ansi.min.zig");
     const ansiFull  = @import("./src/ansi.zig");
     const ansi      = ansiFull;
 
@@ -155,7 +155,7 @@
         io.outWith("\n[{s}] \n", .{ _msg }) catch unreachable;
     }
 
-    /// @ref https://github.com/Super-ZIG/io/blob/main/dist/io.lite.zig
+    /// @ref https://github.com/Super-ZIG/io/blob/main/dist/io.min.zig
     const io = struct {
         /// Outputs a simple message followed by a newline.
         inline fn out( comptime _msg: []const u8 ) !void {
