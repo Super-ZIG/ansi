@@ -59,7 +59,7 @@ pub fn remove( _str: str ) !str {
 pub fn removeBuff( _str: str, _buff: anytype ) !str {
     return try Help.remove(_str, _buff); }
 
-/// Alias for io library types.
+/// Alias for ansi library types.
 pub const types = struct {
     /// Struct of styles.
     pub const styles = struct
