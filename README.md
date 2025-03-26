@@ -1,1 +1,1 @@
-Moved to [io.terminal.cli](https://super-zig.github.io/io/terminal/ansi)
+Moved to [io.terminal.ansi](https://super-zig.github.io/io/terminal/ansi)
